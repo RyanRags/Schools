@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">NYC OpenData</string>
+    <string name="SAT_scores">S.A.T. Scores</string>
+    <string name="math_score_lb">Math:</string>
+    <string name="reading_score_lb">Reading:</string>
+    <string name="writing_score_lb">Writting:</string>
+    <string name="address_lb">Address:</string>
+    <string name="email_lb">Email:</string>
+    <string name="website_lb">Website:</string>
+    <string name="overview_lb">Overview</string>
+    <string name="school_address">Address</string>
+    <string name="school_email">Email</string>
+    <string name="school_name">School Name</string>
+    <string name="website_address">Website</string>
+    <string name="back_arrow">back arrow</string>
+    <string name="company_logo">Company Logo</string>
+    <string name="school">School:</string>
+</resources>
