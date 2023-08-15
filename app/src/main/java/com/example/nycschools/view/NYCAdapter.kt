@@ -3,16 +3,16 @@ package com.example.nycschools.view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.nycschools.common.OnSchoolClicked
 import com.example.nycschools.databinding.SchoolItemLayoutBinding
 import com.example.nycschools.model.SchoolListResponse
-import com.example.nycschools.model.remote.SchoolListResponse
 
 //Adapter to update data
 //creating viewHolders
 //And bind the viewHolder
 //Populating the data
 class NYCAdapter(
-    private val onSchoolClicked: OnShcoolSelected,
+    private val onSchoolClicked: OnSchoolClicked,
     private val items: MutableList<SchoolListResponse> = mutableListOf()
 ) : RecyclerView.Adapter<NYCAdapter.NYCViewHolder>() {
 

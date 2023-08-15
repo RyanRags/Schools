@@ -8,13 +8,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.nycopendata.databinding.ActivityMainBinding
+import com.example.nycschools.databinding.ActivityMainBinding
 import com.example.nycschools.common.OnSchoolClicked
 import com.example.nycschools.common.SCHOOL_ITEM
 import com.example.nycschools.common.StateAction
-import com.example.nycschools.databinding.ActivityMainBinding
 import com.example.nycschools.model.SchoolListResponse
-import com.example.nycschools.model.remote.SchoolListResponse
 import com.example.nycschools.viewmodel.NYCViewModel
 import dagger.hilt.android.AndroidEntryPoint
 //Setting up the models that present a list of schools and
@@ -90,7 +88,7 @@ class MainActivity : AppCompatActivity(), OnSchoolClicked {
     }
 
     override fun schoolClicked(school: SchoolListResponse) {
-        Intent(baseContext, MainActivity2::class.java).apply {
+        Intent(baseContext, DetailActivity::class.java).apply {
             putExtra(SCHOOL_ITEM, school)
             startActivity(this)
         }

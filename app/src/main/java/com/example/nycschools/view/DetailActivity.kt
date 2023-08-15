@@ -8,14 +8,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.nycopendata.databinding.ActivityMain2Binding
 import com.example.nycschools.common.SCHOOL_ITEM
 import com.example.nycschools.common.StateAction
-import com.example.nycschools.databinding.ActivityMain2Binding
+import com.example.nycschools.databinding.ActivityDetailBinding
 import com.example.nycschools.model.SchoolListResponse
 import com.example.nycschools.model.SchoolSatResponse
-import com.example.nycschools.model.remote.SchoolListResponse
-import com.example.nycschools.model.remote.SchoolSatResponse
 import com.example.nycschools.viewmodel.NYCViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,8 +20,8 @@ import dagger.hilt.android.AndroidEntryPoint
 //if no SAT information present, element does not display.
 //validation of data is also coded.
 @AndroidEntryPoint
-class MainActivity2 : AppCompatActivity() {
-    private lateinit var bindingMain2Binding: ActivityMain2Binding
+class DetailActivity : AppCompatActivity() {
+    private lateinit var bindingMain2Binding: ActivityDetailBinding
 
     private val viewModel: NYCViewModel by lazy {
         ViewModelProvider(this).get(NYCViewModel::class.java)
@@ -33,7 +30,7 @@ class MainActivity2 : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bindingMain2Binding = ActivityMain2Binding.inflate(layoutInflater)
+        bindingMain2Binding = ActivityDetailBinding.inflate(layoutInflater)
 
         setContentView(bindingMain2Binding.root)
 
@@ -51,10 +48,10 @@ class MainActivity2 : AppCompatActivity() {
 
         viewModel.getSatList()
 
-        bindingMain2Binding.backButton.setOnClickListener{
-            val intentBack = Intent(this, MainActivity::class.java)
-            startActivity(intentBack)
-        }
+//        bindingMain2Binding.backButton.setOnClickListener{
+//            val intentBack = Intent(this, MainActivity::class.java)
+//            startActivity(intentBack)
+//        }
     }
 
     private fun initObservables(schDbn: String?) {

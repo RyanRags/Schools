@@ -4,9 +4,6 @@ import com.example.nycschools.common.BASE_URL
 import com.example.nycschools.model.NycApi
 import com.example.nycschools.model.Repository
 import com.example.nycschools.model.RepositoryImpl
-import com.example.nycschools.model.remote.NycApi
-import com.example.nycschools.model.remote.Repository
-import com.example.nycschools.model.remote.RepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

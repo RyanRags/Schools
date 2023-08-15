@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#A5DEF2"
     tools:context=".view.SplashScreenActivity">
 
     <ImageView
@@ -15,7 +14,7 @@
         android:layout_marginEnd="10dp"
         android:contentDescription="@string/company_logo"
         android:scaleType="fitXY"
-        android:src="@drawable/nyc_open_data_logo"
+        android:src="@android:drawable/ic_dialog_map"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
 
