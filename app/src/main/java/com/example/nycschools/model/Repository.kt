@@ -1,14 +1,14 @@
 package com.example.nycschools.model
 
 import android.util.Log
-import com.example.nycschools.common.StateAction
+import com.example.nycschools.common.State
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 interface Repository {
-    fun NYCSchoolCatched(): Flow<StateAction>
-    fun NYCSatCatched(): Flow<StateAction>
+    fun NYCSchoolCatched(): Flow<State>
+    fun NYCSatCatched(): Flow<State>
 }
 
 //Implementation to get School and SAT data loaded successfully otherwise provide an error
@@ -18,35 +18,35 @@ class RepositoryImpl @Inject constructor(
 ) : Repository {
 
     override fun NYCSchoolCatched() = flow {
-        emit(StateAction.LOADING)
+        emit(State.LOADING)
         try {
             val respose = service.getSchoolList()
             if (respose.isSuccessful) {
                 respose.body()?.let {
-                    emit(StateAction.SUCCESS(it))
+                    emit(State.SUCCESS(it))
                 } ?: throw Exception("Error null")
             } else {
                 throw Exception("Error failure")
             }
         } catch (e: Exception) {
-            emit(StateAction.ERROR(e))
+            emit(State.ERROR(e))
         }
     }
 
     override fun NYCSatCatched() = flow {
-        emit(StateAction.LOADING)
+        emit(State.LOADING)
         try {
             val respose = service.getSchoolSat()
             if (respose.isSuccessful) {
                 respose.body()?.let {
-                    emit(StateAction.SUCCESS(it))
+                    emit(State.SUCCESS(it))
                     Log.i("Repository", "NYCSatCatched: $it ")
                 } ?: throw Exception("Error null")
             } else {
                 throw Exception("Error failure")
             }
         } catch (e: Exception) {
-            emit(StateAction.ERROR(e))
+            emit(State.ERROR(e))
         }
     }
 }

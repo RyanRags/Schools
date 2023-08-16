@@ -1,6 +1,5 @@
 package com.example.nycschools.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,84 +8,69 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.nycschools.common.SCHOOL_ITEM
-import com.example.nycschools.common.StateAction
+import com.example.nycschools.common.State
 import com.example.nycschools.databinding.ActivityDetailBinding
 import com.example.nycschools.model.SchoolListResponse
 import com.example.nycschools.model.SchoolSatResponse
 import com.example.nycschools.viewmodel.NYCViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
-//Activity that provides detailed information about each school plus SAT scores if available
-//if no SAT information present, element does not display.
-//validation of data is also coded.
+// This activity provides details about each school with SAT scores if they are available
 @AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
-    private lateinit var bindingMain2Binding: ActivityDetailBinding
-
+    private lateinit var activityDetailBinding: ActivityDetailBinding
     private val viewModel: NYCViewModel by lazy {
         ViewModelProvider(this).get(NYCViewModel::class.java)
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bindingMain2Binding = ActivityDetailBinding.inflate(layoutInflater)
-
-        setContentView(bindingMain2Binding.root)
-
+        activityDetailBinding = ActivityDetailBinding.inflate(layoutInflater)
+        setContentView(activityDetailBinding.root)
         intent.apply {
             val school = getParcelableExtra<SchoolListResponse>(SCHOOL_ITEM)
-
-            bindingMain2Binding.tvSchoolName.text = school?.school_name
-            bindingMain2Binding.tvAddress.text = school?.location
-            bindingMain2Binding.tvEmail.text = school?.school_email
-            bindingMain2Binding.tvWebsite.text = school?.website
-            bindingMain2Binding.tvOverview.text = school?.overview_paragraph
-
+            activityDetailBinding.tvSchoolName.text = school?.school_name
+            activityDetailBinding.tvAddress.text = school?.location
+            activityDetailBinding.tvEmail.text = school?.school_email
+            activityDetailBinding.tvWebsite.text = school?.website
+            activityDetailBinding.tvOverview.text = school?.overview_paragraph
             initObservables(school?.dbn)
         }
-
         viewModel.getSatList()
-
-//        bindingMain2Binding.backButton.setOnClickListener{
-//            val intentBack = Intent(this, MainActivity::class.java)
-//            startActivity(intentBack)
-//        }
     }
 
     private fun initObservables(schDbn: String?) {
         viewModel.schoolSatResponse.observe(this) { action ->
             when (action) {
-                is StateAction.LOADING -> {
+                is State.LOADING -> {
                     Toast.makeText(baseContext, "loading SAT schools...", Toast.LENGTH_SHORT).show()
                 }
-                is StateAction.SUCCESS<*> -> {
+                is State.SUCCESS<*> -> {
                     val newSchools = action.response as? List<SchoolSatResponse>
                     newSchools?.let {
                         Log.i("MainActivity2", "initObservablesSAT: $it ")
                         schDbn?.let { schoolDbn ->
-                            populateSatDetails(it, schoolDbn)
+                            satDetails(it, schoolDbn)
                         } ?: showError("Error at school dbn null")
                     } ?: showError("Error at casting SAT")
                 }
-                is StateAction.ERROR -> {
+                is State.ERROR -> {
                     showError(action.error.localizedMessage)
                 }
             }
         }
     }
 
-    private fun populateSatDetails(satDetails: List<SchoolSatResponse>, schDbn: String) {
+    private fun satDetails(satDetails: List<SchoolSatResponse>, schDbn: String) {
         satDetails.firstOrNull { it.dbn == schDbn }?.let {
             if (it.mathAvg.isEmpty()) {
-                bindingMain2Binding.scoreInfo.visibility = View.INVISIBLE
+                activityDetailBinding.scoreInfo.visibility = View.INVISIBLE
             } else {
-                bindingMain2Binding.scoreInfo.visibility = View.VISIBLE
+                activityDetailBinding.scoreInfo.visibility = View.VISIBLE
             }
-
-            bindingMain2Binding.tvMathScores.text = it.mathAvg
-            bindingMain2Binding.tvReadingScores.text = it.readingAvg
-            bindingMain2Binding.tvWritingScores.text = it.writingAvg
+            activityDetailBinding.tvMathScores.text = it.mathAvg
+            activityDetailBinding.tvReadingScores.text = it.readingAvg
+            activityDetailBinding.tvWritingScores.text = it.writingAvg
         }
     }
 

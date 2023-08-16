@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.SplashScreenActivity">
+    tools:context=".view.IntroActivity">
 
     <ImageView
         android:id="@+id/iv_logo"
@@ -12,9 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:contentDescription="@string/company_logo"
         android:scaleType="fitXY"
-        android:src="@android:drawable/ic_dialog_map"
+        android:src="@android:drawable/ic_media_play"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
 

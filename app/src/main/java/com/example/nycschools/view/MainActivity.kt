@@ -9,48 +9,40 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nycschools.databinding.ActivityMainBinding
-import com.example.nycschools.common.OnSchoolClicked
+import com.example.nycschools.common.OnSchoolSelected
 import com.example.nycschools.common.SCHOOL_ITEM
-import com.example.nycschools.common.StateAction
+import com.example.nycschools.common.State
 import com.example.nycschools.model.SchoolListResponse
 import com.example.nycschools.viewmodel.NYCViewModel
 import dagger.hilt.android.AndroidEntryPoint
-//Setting up the models that present a list of schools and
-//provide an option to click and to each school details.
-//Validation is also provided.
 
-//Initializing the data
-//No need to find findviewbyID
-//Observing the data for changes and making changes to UI
+//Setting up the models that present a list of schools that
+// the user can interact with by an option to click and see each schools details
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), OnSchoolClicked {
-
-    private lateinit var bindingMain: ActivityMainBinding
-
+class MainActivity : AppCompatActivity(), OnSchoolSelected {
+    private lateinit var activityMainBinding: ActivityMainBinding
     private val viewModel: NYCViewModel by lazy {
         ViewModelProvider(this).get(NYCViewModel::class.java)
     }
 
-    private lateinit var adapterSchool: NYCAdapter
+    private lateinit var adapterSchool: Adapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bindingMain = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(bindingMain.root)
+        activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(activityMainBinding.root)
     }
 
     override fun onResume() {
         super.onResume()
-
-        initializeRecyclerView()
+        recyclerView()
         initObservables()
         viewModel.getSchoolList()
     }
 
-    private fun initializeRecyclerView() {
-        adapterSchool = NYCAdapter(this)
-
-        bindingMain.listSchool.apply {
+    private fun recyclerView() {
+        adapterSchool = Adapter(this)
+        activityMainBinding.listSchool.apply {
             layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
             adapter = adapterSchool
         }
@@ -59,17 +51,17 @@ class MainActivity : AppCompatActivity(), OnSchoolClicked {
     private fun initObservables() {
         viewModel.schoolResponse.observe(this) { action ->
             when (action) {
-                is StateAction.LOADING -> {
+                is State.LOADING -> {
                     Toast.makeText(baseContext, "loading schools...", Toast.LENGTH_SHORT).show()
                 }
-                is StateAction.SUCCESS<*> -> {
+                is State.SUCCESS<*> -> {
                     val newSchools = action.response as? List<SchoolListResponse>
                     newSchools?.let {
                         adapterSchool.updateData(it)
                         Log.i("MainActivity", "initIbservablesSchoolResponse $it ")
                     } ?: showError("Error at casting")
                 }
-                is StateAction.ERROR -> {
+                is State.ERROR -> {
                     showError(action.error.localizedMessage)
                 }
             }
@@ -87,7 +79,7 @@ class MainActivity : AppCompatActivity(), OnSchoolClicked {
             .show()
     }
 
-    override fun schoolClicked(school: SchoolListResponse) {
+    override fun schoolSelected(school: SchoolListResponse) {
         Intent(baseContext, DetailActivity::class.java).apply {
             putExtra(SCHOOL_ITEM, school)
             startActivity(this)

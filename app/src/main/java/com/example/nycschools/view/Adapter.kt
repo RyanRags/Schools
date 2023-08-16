@@ -3,18 +3,15 @@ package com.example.nycschools.view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.nycschools.common.OnSchoolClicked
+import com.example.nycschools.common.OnSchoolSelected
 import com.example.nycschools.databinding.SchoolItemLayoutBinding
 import com.example.nycschools.model.SchoolListResponse
 
-//Adapter to update data
-//creating viewHolders
-//And bind the viewHolder
-//Populating the data
-class NYCAdapter(
-    private val onSchoolClicked: OnSchoolClicked,
+// update data, creating viewHolders and bind the viewHolder
+class Adapter(
+    private val onSchoolSelected: OnSchoolSelected,
     private val items: MutableList<SchoolListResponse> = mutableListOf()
-) : RecyclerView.Adapter<NYCAdapter.NYCViewHolder>() {
+) : RecyclerView.Adapter<Adapter.NYCViewHolder>() {
 
     class NYCViewHolder(val binding: SchoolItemLayoutBinding)
         : RecyclerView.ViewHolder(binding.root)
@@ -38,10 +35,8 @@ class NYCAdapter(
         holder.binding.tvSchoolName.text = items[position].school_name
         holder.binding.tvSchoolLocation.text = items[position].neighborhood
         holder.binding.tvSchoolPhone.text = items[position].phone_number
-
-
         holder.binding.cardView.setOnClickListener {
-            onSchoolClicked.schoolClicked(items[position])
+            onSchoolSelected.schoolSelected(items[position])
         }
     }
 
